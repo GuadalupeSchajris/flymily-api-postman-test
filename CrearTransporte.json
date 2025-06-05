@@ -1,0 +1,45 @@
+{
+  "name": "Create Transporte",
+  "request": {
+    "method": "POST",
+    "header": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      },
+      {
+        "key": "Authorization",
+        "value": "Bearer {{admin_token}}"
+      }
+    ],
+    "body": {
+      "mode": "raw",
+      "raw": "{\n    \"tipoTransporte\": \"Autobús Familiar\"\n}"
+    },
+    "url": {
+      "raw": "{{base_url}}/api/transportes",
+      "host": ["{{base_url}}"],
+      "path": ["api","transportes"]
+    }
+  },
+  "response": [],
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "exec": [
+          "pm.test(\"Status code is 201\", function() {",
+          "    pm.response.to.have.status(201);",
+          "});",
+          "",
+          "pm.test(\"Transporte creado correctamente\", function() {",
+          "    var jsonData = pm.response.json();",
+          "    pm.expect(jsonData.tipoTransporte).to.eql(\"Autobús Familiar\");",
+          "    pm.environment.set(\"new_transporte_id\", jsonData.id);",
+          "});"
+        ],
+        "type": "text/javascript"
+      }
+    }
+  ]
+}
