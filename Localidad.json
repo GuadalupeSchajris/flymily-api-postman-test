@@ -1,0 +1,46 @@
+{
+  "name": "Create Localidad",
+  "request": {
+    "method": "POST",
+    "header": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      },
+      {
+        "key": "Authorization",
+        "value": "Bearer {{admin_token}}"
+      }
+    ],
+    "body": {
+      "mode": "raw",
+      "raw": "{\n    \"pais\": \"ES\",\n    \"ciudad\": \"Barcelona\"\n}"
+    },
+    "url": {
+      "raw": "{{base_url}}/api/localidades",
+      "host": ["{{base_url}}"],
+      "path": ["api","localidades"]
+    }
+  },
+  "response": [],
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "exec": [
+          "pm.test(\"Status code is 201\", function() {",
+          "    pm.response.to.have.status(201);",
+          "});",
+          "",
+          "pm.test(\"Localidad creada correctamente\", function() {",
+          "    var jsonData = pm.response.json();",
+          "    pm.expect(jsonData.pais).to.eql(\"ES\");",
+          "    pm.expect(jsonData.ciudad).to.eql(\"Barcelona\");",
+          "    pm.environment.set(\"new_localidad_id\", jsonData.id);",
+          "});"
+        ],
+        "type": "text/javascript"
+      }
+    }
+  ]
+}
