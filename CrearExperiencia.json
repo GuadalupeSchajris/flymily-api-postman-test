@@ -1,0 +1,45 @@
+{
+  "name": "Create Tipo Experiencia",
+  "request": {
+    "method": "POST",
+    "header": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      },
+      {
+        "key": "Authorization",
+        "value": "Bearer {{admin_token}}"
+      }
+    ],
+    "body": {
+      "mode": "raw",
+      "raw": "{\n    \"experiencia\": \"Ecoturismo\"\n}"
+    },
+    "url": {
+      "raw": "{{base_url}}/api/tipos-experiencia",
+      "host": ["{{base_url}}"],
+      "path": ["api","tipos-experiencia"]
+    }
+  },
+  "response": [],
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "exec": [
+          "pm.test(\"Status code is 201\", function() {",
+          "    pm.response.to.have.status(201);",
+          "});",
+          "",
+          "pm.test(\"Tipo experiencia creada correctamente\", function() {",
+          "    var jsonData = pm.response.json();",
+          "    pm.expect(jsonData.experiencia).to.eql(\"Ecoturismo\");",
+          "    pm.environment.set(\"new_experiencia_id\", jsonData.id);",
+          "});"
+        ],
+        "type": "text/javascript"
+      }
+    }
+  ]
+}
