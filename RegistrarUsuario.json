@@ -1,0 +1,41 @@
+{
+  "name": "Register User",
+  "request": {
+    "method": "POST",
+    "header": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "body": {
+      "mode": "raw",
+      "raw": "{\n    \"username\": \"nuevo_usuario\",\n    \"password\": \"Test1234\",\n    \"rol\": \"user\"\n}"
+    },
+    "url": {
+      "raw": "{{base_url}}/api/usuarios/registro",
+      "host": ["{{base_url}}"],
+      "path": ["api","usuarios","registro"]
+    }
+  },
+  "response": [],
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "exec": [
+          "pm.test(\"Status code is 201\", function() {",
+          "    pm.response.to.have.status(201);",
+          "});",
+          "",
+          "pm.test(\"Usuario registrado correctamente\", function() {",
+          "    var jsonData = pm.response.json();",
+          "    pm.expect(jsonData.username).to.eql(\"nuevo_usuario\");",
+          "    pm.environment.set(\"new_user_id\", jsonData.id);",
+          "});"
+        ],
+        "type": "text/javascript"
+      }
+    }
+  ]
+}
